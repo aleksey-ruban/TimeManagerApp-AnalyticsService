@@ -11,6 +11,8 @@ import com.alekseyruban.timemanagerapp.analytics_service.entity.User;
 import com.alekseyruban.timemanagerapp.analytics_service.exception.ExceptionFactory;
 import com.alekseyruban.timemanagerapp.analytics_service.repository.ChronometryAnalyticsRepository;
 import com.alekseyruban.timemanagerapp.analytics_service.repository.UserRepository;
+import com.alekseyruban.timemanagerapp.analytics_service.utils.RetryOptimisticLock;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ public class ChronometryAnalyticsService {
     private final ExceptionFactory exceptionFactory;
     private final ActivityServiceClient activityServiceClient;
 
+    @RetryOptimisticLock
+    @Transactional
     public void generateAnalytics(ChronometryCreatedEvent event) {
         ChronometryAnalyticsDto dto = activityServiceClient.getChronometry(
                 new GetChronometryDto(event.getChronometryId())
