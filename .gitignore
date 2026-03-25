@@ -19,6 +19,7 @@ target/
 *.iws
 *.iml
 *.ipr
+*.log
 
 ### NetBeans ###
 /nbproject/private/
@@ -29,6 +30,11 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### ML Models ###
+activity_classifier.onnx
+model_O4.onnx
+tokenizer.json
 
 ### VS Code ###
 .vscode/
