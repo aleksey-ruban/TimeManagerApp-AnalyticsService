@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class ChronometryAnalyticsDto {
+public class ChronometryDto {
     private Long id;
     private Long userId;
     private LocalDate startDate;
@@ -20,4 +20,23 @@ public class ChronometryAnalyticsDto {
     private List<ActivitySnapshotDto> activitySnapshotList;
     private List<ActivityVariationSnapshotDto> activityVariationSnapshotList;
     private List<ActivityRecordSnapshotDto> activityRecordSnapshotList;
+
+    public CategorySnapshotDto findCategoryByActivity(ActivitySnapshotDto activity) {
+        if (activity.getCategorySnapshotId() == null) {
+            return null;
+        }
+
+        return categorySnapshotList.stream()
+                .filter(c -> c.getId().equals(activity.getCategorySnapshotId()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ActivitySnapshotDto findActivityById(Long id) {
+
+        return activitySnapshotList.stream()
+                .filter(a -> a.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 }

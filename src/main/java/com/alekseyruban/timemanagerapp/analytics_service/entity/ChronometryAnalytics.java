@@ -3,6 +3,9 @@ package com.alekseyruban.timemanagerapp.analytics_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -21,15 +24,9 @@ public class ChronometryAnalytics {
     @Column(nullable = false)
     private Long chronometryId;
 
-    @Column
-    private Double activityStartStdDev;
+    @OneToMany(mappedBy = "chronometry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DayAnalyticsEntity> days = new ArrayList<>();
 
-    @Column
-    private Double regularityScore;
-
-    @Column
-    private Double fragmentationIndex;
-
-    @Column
-    private Double longestSessionRatio;
+    @OneToMany(mappedBy = "chronometry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnalyticsIssueEntity> issues = new ArrayList<>();
 }

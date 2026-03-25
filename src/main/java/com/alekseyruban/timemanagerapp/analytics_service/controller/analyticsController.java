@@ -1,8 +1,8 @@
 package com.alekseyruban.timemanagerapp.analytics_service.controller;
 
-import com.alekseyruban.timemanagerapp.analytics_service.DTO.AnalyticsDto;
 import com.alekseyruban.timemanagerapp.analytics_service.DTO.GetChronometryDto;
-import com.alekseyruban.timemanagerapp.analytics_service.service.ChronometryAnalyticsService;
+import com.alekseyruban.timemanagerapp.analytics_service.DTO.response.ChronometryAnalyticsDto;
+import com.alekseyruban.timemanagerapp.analytics_service.service.chronometryAnalytics.ChronometryAnalyticsService;
 import com.alekseyruban.timemanagerapp.analytics_service.utils.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,12 +20,12 @@ public class analyticsController {
     private final ChronometryAnalyticsService chronometryAnalyticsService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AnalyticsDto>> getAnalytics(
+    public ResponseEntity<ApiResponse<ChronometryAnalyticsDto>> getAnalytics(
             @RequestBody GetChronometryDto dto
     ) {
-        AnalyticsDto analytics = chronometryAnalyticsService.getAnalyticsOfChronometre(dto);
+        ChronometryAnalyticsDto analytics = chronometryAnalyticsService.getAnalyticsOfChronometry(dto);
 
-        ApiResponse<AnalyticsDto> response = new ApiResponse<>("Analytics created", analytics);
+        ApiResponse<ChronometryAnalyticsDto> response = new ApiResponse<>("Analytics created", analytics);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
