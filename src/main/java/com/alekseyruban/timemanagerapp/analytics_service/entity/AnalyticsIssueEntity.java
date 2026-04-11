@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class AnalyticsIssueEntity {
                 .collect(
                         Collectors.toMap(
                                 e -> e.getKey().name(),
-                                e -> (Serializable) e.getValue()
+                                e -> normalizeParamValue(e.getValue())
                         )
                 );
 
@@ -67,5 +68,17 @@ public class AnalyticsIssueEntity {
                 .chronometry(chronometry)
                 .recommendation(issue.getRecommendation())
                 .build();
+    }
+
+    private static Serializable normalizeParamValue(Object value) {
+        if (value instanceof Serializable serializable) {
+            if (value instanceof Duration duration) {
+                return duration.toMinutes();
+            }
+
+            return serializable;
+        }
+
+        throw new IllegalArgumentException("Unsupported analytics issue param type: " + value.getClass().getName());
     }
 }

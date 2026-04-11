@@ -4,6 +4,7 @@ import com.alekseyruban.timemanagerapp.analytics_service.service.chronometryAnal
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -185,19 +186,51 @@ public class WeeklyIssuesService {
 
     private double avg(List<AnalyticsIssue> issues, IssueParam param) {
         return issues.stream()
-                .map(i -> (Number) i.getParams().get(param))
+                .map(i -> toDouble(i.getParams().get(param)))
                 .filter(Objects::nonNull)
-                .mapToDouble(Number::doubleValue)
+                .mapToDouble(Double::doubleValue)
                 .average()
                 .orElse(0);
     }
 
     private long sum(List<AnalyticsIssue> issues, IssueParam param) {
         return issues.stream()
-                .map(i -> (Number) i.getParams().get(param))
+                .map(i -> toLong(i.getParams().get(param)))
                 .filter(Objects::nonNull)
-                .mapToLong(Number::longValue)
+                .mapToLong(Long::longValue)
                 .sum();
+    }
+
+    private Double toDouble(Object value) {
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof Number number) {
+            return number.doubleValue();
+        }
+
+        if (value instanceof Duration duration) {
+            return duration.toMinutes() * 1.0;
+        }
+
+        throw new IllegalArgumentException("Unsupported issue param type: " + value.getClass().getName());
+    }
+
+    private Long toLong(Object value) {
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof Number number) {
+            return number.longValue();
+        }
+
+        if (value instanceof Duration duration) {
+            return duration.toMinutes();
+        }
+
+        throw new IllegalArgumentException("Unsupported issue param type: " + value.getClass().getName());
     }
 
 }
