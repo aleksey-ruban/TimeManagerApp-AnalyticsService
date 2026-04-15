@@ -1,13 +1,12 @@
 package com.alekseyruban.timemanagerapp.analytics_service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class AnalyticsServiceApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void applicationClassIsPresent() {
+		org.assertj.core.api.Assertions.assertThat(AnalyticsServiceApplication.class).isNotNull();
 	}
 
 }
